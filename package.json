@@ -26,6 +26,7 @@
     "postgres": "^3.4.6",
     "react": "latest",
     "react-dom": "latest",
+    "react-dropzone": "^14.3.8",
     "swr": "^2.3.6",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "3.4.17",
@@ -40,9 +41,9 @@
     "@types/pg": "^8.15.6",
     "@types/react": "19.0.7",
     "@types/react-dom": "19.0.3",
-    "typedoc": "^0.28.14",
     "drizzle-kit": "^0.31.7",
-    "tsx": "^4.20.6"
+    "tsx": "^4.20.6",
+    "typedoc": "^0.28.14"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
