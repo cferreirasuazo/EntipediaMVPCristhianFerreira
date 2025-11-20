@@ -15,16 +15,6 @@ export default $config({
     const DbUser = new sst.Secret("DB_USER");
     const DbPassword = new sst.Secret("DB_PASSWORD");
 
-    // RDS instance
-    // const db = new sst.aws.RDS("Database", {
-    //   engine: "postgresql11.16",
-    //   defaultDatabaseName: "entipedia",
-    //   credentials: {
-    //     username: DbUser,
-    //     password: DbPassword,
-    //   },
-    // });
-
     const vpc = new sst.aws.Vpc("MyVpc");
     const db = new sst.aws.Postgres("MyPostgres", {
       vpc,

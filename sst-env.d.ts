@@ -5,6 +5,25 @@
 
 declare module "sst" {
   export interface Resource {
+    "DB_PASSWORD": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "DB_USER": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "MyVpc": {
+      "type": "sst.aws.Vpc"
+    }
+    "MyWeb": {
+      "type": "sst.aws.Nextjs"
+      "url": string
+    }
+    "UploadsBucket": {
+      "name": string
+      "type": "sst.aws.Bucket"
+    }
   }
 }
 /// <reference path="sst-env.d.ts" />

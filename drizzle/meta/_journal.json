@@ -15,6 +15,13 @@
       "when": 1763202701660,
       "tag": "0001_lethal_patch",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1763602943256,
+      "tag": "0002_uneven_roughhouse",
+      "breakpoints": true
     }
   ]
 }
