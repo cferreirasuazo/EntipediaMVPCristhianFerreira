@@ -51,52 +51,65 @@ Upload, list, update, and delete file records.
 /
 ├── .github/                 # GitHub workflows (CI/CD)
 ├── .next/                   # Next.js build output
-├── .sst/                    # SST build artifacts
 ├── app/                     # Next.js App Router pages & routes
 ├── components/              # Reusable UI components
-├── drizzle/                 # Drizzle schema, migrations, and DB config
-├── lib/                     # Utilities (AWS, validation, helpers)
-├── node_modules/
+├── drizzle/                 # Drizzle schema, migrations, config
+├── lib/                     # Utility modules (AWS, validation, helpers)
 ├── public/                  # Static assets
 ├── .env.example             # Environment variable template
 ├── .env.local               # Local environment variables
-├── components.json          # Shadcn components config (if used)
-├── docker-compose.yml       # Local dev environment (Postgres, etc.)
+├── docker-compose.yml       # Local development services
 ├── Dockerfile               # Production container build
-├── drizzle.config.ts        # Drizzle ORM configuration
-├── eslint.config.mts        # ESLint configuration
-├── next-env.d.ts
-├── next.config.ts           # Next.js configuration
+├── Dockerfile.dev           # Development container
+├── drizzle.config.ts
+├── eslint.config.mts
+├── next.config.ts
 ├── package.json
-├── pnpm-lock.yaml           # Dependency lockfile
+├── pnpm-lock.yaml
 ├── postcss.config.js
-├── README.md                # Project documentation
-├── sst-env.d.ts
-├── sst.config.ts            # SST infrastructure definitions
-├── tailwind.config.ts       # TailwindCSS config
+├── tailwind.config.ts
 ├── tsconfig.json
 └── tsconfig.tsbuildinfo
+
 
 ```
 
 ---
 
-## 🚀 Getting Started
+# 🚀 Getting Started
 
-### Install dependencies
+## ⚙️ Environment Variables
 
-```bash
-pnpm install
+### **`.env.local` Example**
+
+Create a `.env.local` file with:
+
+```
+AWS_REGION=us-east-1
+AWS_ACCESS_KEY_ID=your_access_key
+AWS_SECRET_ACCESS_KEY=your_secret_key
+S3_BUCKET=your_bucket_name
+
+# Postgres (Docker)
+DATABASE_URL=postgres://postgres:postgres@db:5432/entipedia_db
 ```
 
-### Run Docker containers
+# 🐳 Docker
+
+Build docker containers using compose for development
+
+```bash
+docker-compose build
+```
+
+Run container
 
 ```bash
 docker-compose up -d
 ```
 
-### Push Drizzle migrations
+Run migrations
 
 ```bash
-pnpm drizzle:push
+docker compose run --rm web pnpm drizzle-kit push
 ```
