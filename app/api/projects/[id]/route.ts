@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm";
 export async function PUT(req: Request, context: { params: { id: string } }) {
   try {
     const { params } = context;
-    const { id } = await params; // <-- FIX
+    const { id } = await params;
 
     const body = await req.json();
     const parsed = ProjectUpdate.parse(body);
@@ -36,7 +36,7 @@ export async function DELETE(
   context: { params: { id: string } }
 ) {
   const { params } = context;
-  const { id } = await params; // <-- FIX
+  const { id } = await params;
 
   const deleted = await db
     .delete(projects)

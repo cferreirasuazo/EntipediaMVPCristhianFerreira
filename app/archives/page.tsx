@@ -13,6 +13,7 @@ export default function ArchivesPage() {
     deleteFile,
     handleDrop,
     uploadProgress,
+    loadingFetchFiles,
   } = useFileManager();
 
   const [description, setDescription] = useState("");
@@ -26,6 +27,32 @@ export default function ArchivesPage() {
   const onDropWrapper = (e: React.DragEvent) => {
     handleDrop(e);
     if (inputRef.current) inputRef.current.value = "";
+  };
+
+  const handleDownload = async (id: string) => {
+    const res = await fetch(`/api/files/${id}/download`);
+
+    if (!res.ok) {
+      alert("Failed to download");
+      return;
+    }
+
+    const blob = await res.blob();
+
+    const cd = res.headers.get("Content-Disposition") || "";
+    const match = cd.match(/filename="(.+)"/);
+    const filename = match ? match[1] : "file";
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -102,35 +129,43 @@ export default function ArchivesPage() {
         </thead>
 
         <tbody>
-          {files.map((file) => (
-            <tr key={file.id} className="border-t">
-              <td className="p-2">{file.name}</td>
-              <td className="p-2">{file.type}</td>
-              <td className="p-2">{file.description}</td>
-              <td className="p-2">
-                {new Date(file.createdAt).toLocaleString()}
-              </td>
-
-              <td className="p-2 flex gap-2">
-                <a
-                  href={file.url}
-                  target="_blank"
-                  className="text-blue-600 underline"
-                >
-                  Download
-                </a>
-
-                <button
-                  onClick={() => deleteFile(file.id)}
-                  className="text-red-600"
-                >
-                  Delete
-                </button>
+          {loadingFetchFiles && (
+            <tr>
+              <td colSpan={5} className="p-4 text-center text-gray-500">
+                Loading files...
               </td>
             </tr>
-          ))}
+          )}
 
-          {files.length === 0 && (
+          {!loadingFetchFiles &&
+            files.map((file) => (
+              <tr key={file.id} className="border-t">
+                <td className="p-2">{file.name}</td>
+                <td className="p-2">{file.type}</td>
+                <td className="p-2">{file.description}</td>
+                <td className="p-2">
+                  {new Date(file.createdAt).toLocaleString()}
+                </td>
+
+                <td className="p-2 flex gap-2">
+                  <button
+                    onClick={() => handleDownload(file.id)}
+                    className="text-blue-600 underline"
+                  >
+                    Download
+                  </button>
+
+                  <button
+                    onClick={() => deleteFile(file.id)}
+                    className="text-red-600"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+
+          {!loadingFetchFiles && files.length === 0 && (
             <tr>
               <td colSpan={5} className="p-4 text-center text-gray-500">
                 No files uploaded yet.

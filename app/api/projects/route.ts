@@ -2,12 +2,12 @@ import { NextResponse } from "next/server";
 import { db } from "../../../lib/db";
 import { ProjectCreate } from "../../../lib/validators";
 import { projects } from "@/lib/schema";
-
+import { asc } from "drizzle-orm";
 export async function GET() {
   const rows = await db
     .select()
     .from(projects)
-    .orderBy(projects.created_at, "asc");
+    .orderBy(asc(projects.created_at));
   return NextResponse.json(rows);
 }
 

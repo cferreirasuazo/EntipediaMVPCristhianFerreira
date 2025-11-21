@@ -19,16 +19,20 @@ export function useFileManager() {
   const [files, setFiles] = useState<FileRecord[]>([]);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [loadingFetchFiles, setLoadingFetchFiles] = useState(false);
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const fetchFiles = useCallback(async () => {
+    setLoadingFetchFiles(true);
     try {
       const res = await fetch("/api/files");
       const data = await res.json();
       setFiles(data);
     } catch (err) {
       console.error("fetchFiles error", err);
+    } finally {
+      setLoadingFetchFiles(false);
     }
   }, []);
 
@@ -149,5 +153,6 @@ export function useFileManager() {
     uploadFile,
     deleteFile,
     handleDrop,
+    loadingFetchFiles,
   };
 }

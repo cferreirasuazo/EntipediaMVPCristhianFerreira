@@ -4,7 +4,6 @@
 import { useEffect, useState } from "react";
 import { useUpdateProject } from "../hooks/projects/useUpdateProject";
 import { useDeleteProject } from "../hooks/projects/useDeleteProject";
-import { useCreateProject } from "../hooks/projects/useCreateProject";
 import { Project } from "./types";
 import KanbanBoard from "./components/KanbanBoard";
 import CreateProjectModal from "./components/CreateProjectModal";
@@ -16,7 +15,6 @@ export default function ProjectsPage() {
 
   const { updateProject } = useUpdateProject();
   const { deleteProject } = useDeleteProject();
-  const { createProject } = useCreateProject();
 
   async function load() {
     setLoading(true);
@@ -71,7 +69,7 @@ export default function ProjectsPage() {
     }
   }
 
-  async function handleCreated(projectId: string) {
+  async function handleCreated() {
     // after create, fetch the created project (or refetch all)
     // simplest: re-fetch all
     await load();

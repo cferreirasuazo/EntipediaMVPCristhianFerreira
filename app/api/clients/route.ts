@@ -64,6 +64,7 @@ export async function PUT(req: NextRequest) {
   try {
     const body = await req.json();
     const parsed = clientUpdateSchema.parse(body);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateObj: any = {};
     if (parsed.name !== undefined) updateObj.name = parsed.name;
     if (parsed.type !== undefined) updateObj.type = parsed.type;
@@ -80,7 +81,7 @@ export async function PUT(req: NextRequest) {
     const [updated] = await db
       .update(clients)
       .set(updateObj)
-      .where(clients.id.eq(parsed.id))
+      .where(eq(clients, parsed.id))
       .returning();
     return NextResponse.json({ ok: true, data: updated });
   } catch (err) {
@@ -100,7 +101,7 @@ export async function DELETE(req: NextRequest) {
         { ok: false, error: "id required" },
         { status: 400 }
       );
-    await db.delete(clients).where(clients.id.eq(id));
+    await db.delete(clients).where(eq(clients.id, id));
     return NextResponse.json({ ok: true });
   } catch (err) {
     return NextResponse.json(

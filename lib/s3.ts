@@ -6,6 +6,7 @@ import {
   GetObjectCommand,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { Readable } from "stream";
 
 const s3 = new S3Client({ region: process.env.AWS_REGION });
 const Bucket = process.env.S3_BUCKET as string;
@@ -40,4 +41,20 @@ export async function listFiles() {
 export async function deleteFile(key: string) {
   const command = new DeleteObjectCommand({ Bucket, Key: key });
   await s3.send(command);
+}
+
+export async function downloadFile(key: string): Promise<Buffer> {
+  const command = new GetObjectCommand({ Bucket, Key: key });
+  const { Body } = await s3.send(command);
+
+  if (!Body) throw new Error("Empty S3 body");
+
+  const stream = Body as Readable;
+
+  const chunks: Buffer[] = [];
+  for await (const chunk of stream) {
+    chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+  }
+
+  return Buffer.concat(chunks);
 }

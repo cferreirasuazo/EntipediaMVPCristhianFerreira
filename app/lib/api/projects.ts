@@ -1,4 +1,6 @@
-export async function createProject(payload: any) {
+import { ProjectFormValues } from "@/app/projects/types";
+
+export async function createProject(payload: ProjectFormValues) {
   const res = await fetch("/api/projects", {
     method: "POST",
     body: JSON.stringify(payload),

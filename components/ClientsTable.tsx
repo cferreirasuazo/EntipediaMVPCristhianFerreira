@@ -24,7 +24,7 @@ export default function ClientsTable() {
   );
   const [showCreate, setShowCreate] = useState(false);
 
-  const { data, mutate, isValidating } = useSWR(
+  const { data, mutate } = useSWR(
     `/api/clients?page=${page}&pageSize=10`,
     fetcher,
     { revalidateOnFocus: false }
@@ -50,6 +50,7 @@ export default function ClientsTable() {
     const patch = localEdits[id];
     if (!patch) return;
     // convert value types
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const payload: any = { id };
     if (patch.name !== undefined) payload.name = String(patch.name);
     if (patch.type !== undefined) payload.type = String(patch.type);
@@ -116,10 +117,13 @@ export default function ClientsTable() {
                     <input
                       autoFocus
                       value={(localEdits[c.id]?.name ?? c.name) as string}
-                      onChange={(e) =>
-                        setLocalEdits((e) => ({
-                          ...e,
-                          [c.id]: { ...(e[c.id] || {}), name: e.target.value },
+                      onChange={(event) =>
+                        setLocalEdits((prev) => ({
+                          ...prev,
+                          [c.id]: {
+                            ...(prev[c.id] || {}),
+                            name: event.target.value,
+                          },
                         }))
                       }
                       onBlur={() => saveEdit(c.id)}
@@ -139,10 +143,13 @@ export default function ClientsTable() {
                   {editing?.id === c.id && editing.field === "type" ? (
                     <select
                       value={(localEdits[c.id]?.type ?? c.type) as string}
-                      onChange={(e) =>
-                        setLocalEdits((e) => ({
-                          ...e,
-                          [c.id]: { ...(e[c.id] || {}), type: e.target.value },
+                      onChange={(event) =>
+                        setLocalEdits((prev) => ({
+                          ...prev,
+                          [c.id]: {
+                            ...(prev[c.id] || {}),
+                            type: event.target.value as "Persona" | "Compañía",
+                          },
                         }))
                       }
                       onBlur={() => saveEdit(c.id)}
@@ -167,12 +174,16 @@ export default function ClientsTable() {
                       type="number"
                       step="0.01"
                       value={
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         (localEdits[c.id]?.value ?? String(c.value)) as any
                       }
-                      onChange={(e) =>
-                        setLocalEdits((e) => ({
-                          ...e,
-                          [c.id]: { ...(e[c.id] || {}), value: e.target.value },
+                      onChange={(event) =>
+                        setLocalEdits((prev) => ({
+                          ...prev,
+                          [c.id]: {
+                            ...(prev[c.id] || {}),
+                            value: event.target.value,
+                          },
                         }))
                       }
                       onBlur={() => saveEdit(c.id)}
@@ -197,12 +208,12 @@ export default function ClientsTable() {
                           c.since_date ??
                           "") as string
                       }
-                      onChange={(e) =>
-                        setLocalEdits((e) => ({
-                          ...e,
+                      onChange={(event) =>
+                        setLocalEdits((prev) => ({
+                          ...prev,
                           [c.id]: {
-                            ...(e[c.id] || {}),
-                            since_date: e.target.value,
+                            ...(prev[c.id] || {}),
+                            since_date: event.target.value,
                           },
                         }))
                       }
@@ -228,12 +239,12 @@ export default function ClientsTable() {
                           c.until_date ??
                           "") as string
                       }
-                      onChange={(e) =>
-                        setLocalEdits((e) => ({
-                          ...e,
+                      onChange={(event) =>
+                        setLocalEdits((prev) => ({
+                          ...prev,
                           [c.id]: {
-                            ...(e[c.id] || {}),
-                            until_date: e.target.value,
+                            ...(prev[c.id] || {}),
+                            until_date: event.target.value,
                           },
                         }))
                       }
@@ -350,6 +361,7 @@ function CreateModal({ onClose }: { onClose: () => void }) {
             <label className="block text-sm">Tipo</label>
             <select
               value={type}
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               onChange={(e) => setType(e.target.value as any)}
               className="w-full border rounded px-2 py-1"
             >
