@@ -29,6 +29,7 @@ export function useUpdateProject() {
         return { success: false, error: msg };
       }
       return { success: true, project: json };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       const msg = err?.message ?? "Network error";
       setError(msg);

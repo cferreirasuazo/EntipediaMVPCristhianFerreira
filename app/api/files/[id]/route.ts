@@ -36,6 +36,7 @@ export async function DELETE(
     await db.delete(files).where(eq(files.id, id));
 
     return NextResponse.json({ ok: true });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     console.error("DELETE /api/files/[id] error:", err);
     return NextResponse.json(

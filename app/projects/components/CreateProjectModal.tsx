@@ -1,6 +1,6 @@
 // /components/CreateProjectModal.tsx
 "use client";
-
+import React from "react";
 import { useCreateProject } from "@/app/hooks/projects/useCreateProject";
 import { useState } from "react";
 import { ProjectFormValues } from "../types";
@@ -87,6 +87,7 @@ export default function CreateProjectModal({
               <label className="block text-sm font-medium mb-1">Estatus</label>
               <select
                 value={form.status}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 onChange={(e) => handleChange("status", e.target.value as any)}
                 className="w-full border rounded px-3 py-2"
               >
@@ -105,6 +106,7 @@ export default function CreateProjectModal({
               <select
                 value={form.priority}
                 onChange={(e) =>
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   handleChange("priority", e.target.value as any)
                 }
                 className="w-full border rounded px-3 py-2"

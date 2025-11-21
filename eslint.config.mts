@@ -46,7 +46,7 @@ export default defineConfig([
       },
     },
     rules: {
-      "react/react-in-jsx-scope": "off",
+      "react/react-in-jsx-scope": "off", // ← NOW THIS WINS
       "react/jsx-uses-react": "off",
     },
   },

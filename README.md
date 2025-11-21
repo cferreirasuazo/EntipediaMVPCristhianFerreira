@@ -28,16 +28,11 @@ Upload, list, update, and delete file records.
 
 ## 🛠️ Tech Stack
 
-### **Frontend**
+### **Core Stack**
 
 - **React**
 - **Next.js**
 - **TypeScript**
-
-### **Backend / Infrastructure**
-
-- **SST (Serverless Stack)** — app deployment + infrastructure-as-code
-- **AWS SDK** — interactions with AWS services
 
 ### **Database**
 

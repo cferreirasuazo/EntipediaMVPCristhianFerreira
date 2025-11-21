@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
 
     const uploadUrl = await getPresignedPutUrl(key, contentType, 300);
     return NextResponse.json({ uploadUrl, key });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     console.error("POST /api/files/upload error:", err);
     return NextResponse.json(

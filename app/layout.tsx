@@ -1,4 +1,5 @@
 import "./ui/global.css";
+import React from "react";
 import type { ReactNode } from "react";
 import { SidebarNav } from "./ui/SidebarNav";
 import { Header } from "./ui/Header";

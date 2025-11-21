@@ -23,6 +23,7 @@ export function useDeleteProject() {
         return { success: false, error: msg };
       }
       return { success: true };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       const msg = err?.message ?? "Network error";
       setError(msg);

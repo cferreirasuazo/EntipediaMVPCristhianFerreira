@@ -6,12 +6,9 @@ import { eq } from "drizzle-orm";
 import { downloadFile } from "@/lib/s3";
 import { extractKeyFromUrl } from "@/lib/utils";
 
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: Request, context: { params: { id: string } }) {
   try {
-    const { id } = await params;
+    const { id } = context.params;
 
     const [row] = await db
       .select()
@@ -34,10 +31,9 @@ export async function GET(
         "Content-Disposition": `attachment; filename="${filename}"`,
       },
     });
-  } catch (err: any) {
-    return NextResponse.json(
-      { error: err?.message ?? "Internal error" },
-      { status: 500 }
-    );
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Internal error";
+
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

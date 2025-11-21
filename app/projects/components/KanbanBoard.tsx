@@ -1,6 +1,6 @@
 // /components/KanbanBoard.tsx
 "use client";
-
+import React from "react";
 import {
   DndContext,
   DragEndEvent,

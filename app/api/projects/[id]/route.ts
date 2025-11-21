@@ -22,6 +22,7 @@ export async function PUT(req: Request, context: { params: { id: string } }) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
 
     return NextResponse.json(updated[0]);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     console.error(err);
     return NextResponse.json(

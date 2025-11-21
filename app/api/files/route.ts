@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { files } from "@/lib/schema";
-import { asc, desc } from "drizzle-orm";
+import { desc } from "drizzle-orm";
 import { getPresignedGetUrl } from "@/lib/s3";
 
 export async function GET() {
@@ -23,6 +23,7 @@ export async function GET() {
       }))
     );
     return NextResponse.json(withUrls);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     console.error("GET /api/files error:", err);
     return NextResponse.json(
@@ -64,6 +65,7 @@ export async function POST(req: NextRequest) {
       .returning();
 
     return NextResponse.json(inserted[0]);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     console.error("POST /api/files error:", err);
     return NextResponse.json(
