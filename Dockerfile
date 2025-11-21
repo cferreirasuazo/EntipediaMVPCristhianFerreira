@@ -1,25 +1,22 @@
-# ------------------------
-# Base image
-# ------------------------
-FROM node:20-alpine AS dev
-
+FROM node:20-alpine AS builder
+RUN apk add --no-cache libc6-compat
 # Install required dependencies for pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
-
-# Set working directory
 WORKDIR /app
-
-# Copy only package files first (better caching)
 COPY package.json pnpm-lock.yaml ./
-
-# Install deps
-RUN pnpm install
-
-# Copy the rest of the project
+RUN pnpm install --frozen-lockfile
 COPY . .
+RUN pnpm build
 
-# Next.js dev server runs on port 3000
+FROM node:20-alpine AS runner
+RUN apk add --no-cache tini
+WORKDIR /app
+ENV NODE_ENV=production
+RUN addgroup -S next && adduser -S next -G next
+USER next
+COPY --chown=next:next --from=builder /app/.next/standalone ./
+COPY --chown=next:next --from=builder /app/.next/static ./.next/static
+COPY --chown=next:next --from=builder /app/public ./public
 EXPOSE 3000
-
-# Enable hot reload + bind to 0.0.0.0 for docker
-CMD ["pnpm", "dev"]
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["node", "server.js"]
